@@ -7,7 +7,7 @@ export const authenticated = (fn: NextApiHandler) => async (
   req: NextApiRequest,
   res: NextApiResponse
 ) => {
-  verify(req.headers.authorization!, secret, async function(err, decoded) {
+  verify(req.cookies.auth!, secret, async function(err, decoded) {
     if (!err && decoded) {
       return await fn(req, res);
     }

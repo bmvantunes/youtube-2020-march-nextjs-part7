@@ -1,4 +1,5 @@
 import { compare } from 'bcrypt';
+import cookie from 'cookie';
 import { sign } from 'jsonwebtoken';
 import { NextApiRequest, NextApiResponse } from 'next';
 import sqlite from 'sqlite';
@@ -16,7 +17,15 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
       if (!err && result) {
         const claims = { sub: person.id, myPersonEmail: person.email };
         const jwt = sign(claims, secret, { expiresIn: '1h' });
-        res.json({ authToken: jwt });
+
+        res.setHeader('Set-Cookie', cookie.serialize('auth', jwt, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV !== 'development',
+          sameSite: 'strict',
+          maxAge: 3600,
+          path: '/'
+        }))
+        res.json({message: 'Welcome back to the app!'});
       } else {
         res.json({ message: 'Ups, something went wrong!' });
       }
