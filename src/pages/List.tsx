@@ -1,7 +1,6 @@
 import fetch from 'isomorphic-unfetch';
 import Link from 'next/link';
 import { VehiclePerson } from '../../api/VehiclePerson';
-import MyComp from './bruno';
 
 export interface ListProps {
   ownersList?: VehiclePerson[];
@@ -16,7 +15,6 @@ export default function List({ownersList}: ListProps) {
             <a>
               Navigate to {e.ownerName}'s {e.vehicle}
             </a>
-            <MyComp/>
           </Link>
         </div>
       ))}
